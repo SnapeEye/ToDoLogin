@@ -140,10 +140,8 @@ function signIn(mail,pass) {
 function signInReply() {
 	if(http.readyState == 4 && http.status == 200) { 
 		var response = JSON.parse(http.responseText);
-		if(response == null) {
-			// if login fails
+		if(response == '0') {
 			alert('Login failed! Verify user and password.');
-			// else if login is ok show a message: "Welcome + the user name".
 		} else {
 			setLoggedUser(response);
 			rebuild('toDo');
@@ -169,9 +167,7 @@ function signUpReply() {
 	if(http.readyState == 4 && http.status == 200) { 
 		var response = http.responseText;
 		if(response == 'exists') {
-			// if login fails
-			alert('Registeration failed! Verify user and password.');
-			// else if login is ok show a message: "Welcome + the user name".
+			alert('Registeration failed! User with such e-mail already exists.');
 		} else if (response == 'success') {
 			alert('Success');
 			rebuild('signIn');
