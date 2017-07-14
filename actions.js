@@ -142,11 +142,10 @@ function signInReply() {
 		var response = JSON.parse(http.responseText);
 		if(response == null) {
 			// if login fails
-			document.getElementById('regStatus').innerHTML = 'Login failed! Verify user and password.';
+			alert('Login failed! Verify user and password.');
 			// else if login is ok show a message: "Welcome + the user name".
 		} else {
 			setLoggedUser(response);
-			document.getElementById('regStatus').innerHTML = '';
 			rebuild('toDo');
 		}
 	}
@@ -171,14 +170,13 @@ function signUpReply() {
 		var response = http.responseText;
 		if(response == 'exists') {
 			// if login fails
-			document.getElementById('regStatus').innerHTML = 'Registeration failed! Verify user and password.';
+			alert('Registeration failed! Verify user and password.');
 			// else if login is ok show a message: "Welcome + the user name".
 		} else if (response == 'success') {
-			document.getElementById('regStatus').innerHTML = '';
 			alert('Success');
 			rebuild('signIn');
 		} else {
-			document.getElementById('regStatus').innerHTML = 'Error acquired. Try again!';
+			alert('Error acquired. Try again!');
 		}
 	}
 }
