@@ -1,15 +1,11 @@
 ///////////////////////////////////////////////////////////////////
 // BLOCK THAT STARTS ON EVERY TIME THE PAGE REFRESHES
 ///////////////////////////////////////////////////////////////////
-//=require = name;
 
 // Hide all 3 blocks
 document.getElementById('registration').style.display = 'none';
 document.getElementById('signIn').style.display = 'none';
 document.getElementById('toDo').style.display = 'none';
-
-// List of ToDo elements
-var mas=[];
 
 // Create connection object to MySQL
 var http = createConnectionObject();
@@ -27,14 +23,11 @@ if (current_user != null)
 	mode = 'toDo';
 
 // If no block detected or it's our first run
-if (mode === null)
-{
+if (mode === null) {
 	initRegisterWorkspace(); // Registration page initializes
 }
-else //or we initialize the block we need
-{
-	switch(mode)
-	{
+else { //or we initialize the block we need
+	switch(mode) {
 		case "registration":
 			initRegisterWorkspace();
 			break;
@@ -57,7 +50,7 @@ else //or we initialize the block we need
 ///////////////////////////////////////////////////////////////////
 
 // Initialize 'Registration' block of components
-function initRegisterWorkspace(){
+function initRegisterWorkspace() {
 	document.title = 'Registration';
 	var block = document.getElementById('registration');
 	block.style.display = "block";
@@ -65,14 +58,14 @@ function initRegisterWorkspace(){
 }
 
 // Initialize 'Sign In' block of components
-function initSignInWorkspace(){
+function initSignInWorkspace() {
 	document.title = 'Sign In';
 	var block = document.getElementById('signIn');
 	block.style.display = "block";
 }
 
 // Initialize 'ToDo' block of components
-function initToDoWorkspace(){
+function initToDoWorkspace() {
 	document.title = 'To Do List';
 	var block = document.getElementById('toDo');
 	block.style.display = "block";
@@ -88,25 +81,25 @@ function initToDoWorkspace(){
 ///////////////////////////////////////////////////////////////////
 
 // Change the mode of the page to display
-function rebuild(mode){
+function rebuild(mode) {
 	localStorage.setItem('mode',mode);
 	refresh();
 }
 
 // Refreshes the page
-function refresh(){
+function refresh() {
 	// scroll it!
 	location.reload();
 }
 
 // Checks for logged in user
-function getLoggedUser(){
+function getLoggedUser() {
 	var string = localStorage.getItem('loggedUser');
 	var user = JSON.parse(string);
 	return user;
 }
 
-function setLoggedUser(user){
+function setLoggedUser(user) {
 	var string = JSON.stringify(user);
 	localStorage.setItem('loggedUser',string);
 }
@@ -116,10 +109,10 @@ function setLoggedUser(user){
 ///////////////////////////////////////////////////////////////////
 
 // Creates connection object
-function createConnectionObject(){
+function createConnectionObject() {
 	var request_type;
 	var browser = navigator.appName;
-	if(browser == "Microsoft Internet Explorer"){
+	if(browser == "Microsoft Internet Explorer") {
 		request_type = new ActiveXObject("Microsoft.XMLHTTP");
 	}else{
 		request_type = new XMLHttpRequest();
@@ -132,7 +125,7 @@ function createConnectionObject(){
 ///////////////////////////////////////////////////////////////////
 
 // Sign in to an account
-function signIn(mail,pass){
+function signIn(mail,pass) {
 	var email = encodeURI(mail);
 	var psw = encodeURI(pass);
 
@@ -144,10 +137,10 @@ function signIn(mail,pass){
 	http.send(null);
 }
 // Reaction on signIn 'over' state
-function signInReply(){
-	if(http.readyState == 4 && http.status == 200){ 
+function signInReply() {
+	if(http.readyState == 4 && http.status == 200) { 
 		var response = JSON.parse(http.responseText);
-		if(response == null){
+		if(response == null) {
 			// if login fails
 			document.getElementById('regStatus').innerHTML = 'Login failed! Verify user and password.';
 			// else if login is ok show a message: "Welcome + the user name".
@@ -164,7 +157,7 @@ function signInReply(){
 ///////////////////////////////////////////////////////////////////
 
 // Sign Up in ToDo system
-function signUp(email,psw,fname,lname){
+function signUp(email,psw,fname,lname) {
 	var nocache = 0;
 	nocache = Math.random();
 
@@ -173,18 +166,18 @@ function signUp(email,psw,fname,lname){
 	http.send(null);
 }
 // Reaction on signUp 'over' state
-function signUpReply(){
-	if(http.readyState == 4 && http.status == 200){ 
+function signUpReply() {
+	if(http.readyState == 4 && http.status == 200) { 
 		var response = http.responseText;
-		if(response == 'exists'){
+		if(response == 'exists') {
 			// if login fails
 			document.getElementById('regStatus').innerHTML = 'Registeration failed! Verify user and password.';
 			// else if login is ok show a message: "Welcome + the user name".
-		} else if (response == 'success'){
+		} else if (response == 'success') {
 			document.getElementById('regStatus').innerHTML = '';
 			alert('Success');
 			rebuild('signIn');
-		} else{
+		} else {
 			document.getElementById('regStatus').innerHTML = 'Error acquired. Try again!';
 		}
 	}
@@ -194,7 +187,7 @@ function signUpReply(){
 // CANCEL CURRENT WORK SESSION
 ///////////////////////////////////////////////////////////////////
 // Sign out from current user's session
-function signOut(){
+function signOut() {
 	updateBase();
 	document.getElementById('loggedUserName').innerHTML = '';
 	localStorage.removeItem('loggedUser');
@@ -204,7 +197,7 @@ function signOut(){
 }
 
 // Update database with current data from To Do List when signing out
-function updateBase(){
+function updateBase() {
 	var string = localStorage.getItem('currentList');
 	var user = getLoggedUser();
 	var nocache = 0;
@@ -215,13 +208,11 @@ function updateBase(){
 	http.send(null);
 }
 //
-function updateBaseReply(){
-	if(http.readyState == 4 && http.status == 200){ 
+function updateBaseReply() {
+	if(http.readyState == 4 && http.status == 200) { 
 		var response = http.responseText;
-		if(response == 'success'){
-			// if login fails
+		if(response == 'success') {
 			alert('Data saved. Goodbye!');
-			// else if login is ok show a message: "Welcome + the user name".
 		} else {
 			
 			alert('Error! Failed to save data: ' + response)
@@ -234,7 +225,7 @@ function updateBaseReply(){
 ///////////////////////////////////////////////////////////////////
 
 // Init current user's ToDo List
-function initList(user){
+function initList(user) {
 	// Add a "checked" symbol when clicking on a list item
 	var list = document.querySelector('ul');
 	list.addEventListener('click', function(ev) {
@@ -243,10 +234,10 @@ function initList(user){
   		}
 	}, false);
 
-	var tmp = JSON.parse(localStorage.getItem('currentList'));
-	if (tmp != null){
-		for (var i = 0; i < tmp.length; i++) {
-			newElement(tmp[i].text,tmp[i].checked)
+	var mas = JSON.parse(localStorage.getItem('currentList'));
+	if (mas != null) {
+		for (var i = 0; i < mas.length; i++) {
+			newElement(mas[i].text,mas[i].checked)
 		}
 	} else {
 		var nocache = 0;
@@ -258,30 +249,28 @@ function initList(user){
 	}
 }
 // Reaction on initList 'over' state
-function initListReply(){
-	if(http.readyState == 4 && http.status == 200){ 
+function initListReply() {
+	if(http.readyState == 4 && http.status == 200) { 
 		var response = http.responseText;
-		if(response == '0'){
-			// if login fails
+		if(response == '0') {
 			alert('Load data error. Please, reloging!');
-			// else if login is ok show a message: "Welcome + the user name".
-		} else if (response != ''){
-			mas = [];
-			var tmp = JSON.parse(response);
-			for (var i = 0; i < tmp.length; i++) {
-				newElement(tmp[i].text,tmp[i].checked);
+		} else if (response != '') {
+			var mas = JSON.parse(response);
+			for (var i = 0; i < mas.length; i++) {
+				newElement(mas[i].text,mas[i].checked);
 			}
 		}
 	}
 }
 
 // Creates new element in ToDo List
-function newElement(value,state){
+function newElement(value,state) {
 	// Create ListItem element with input value
 	var li = document.createElement("li");
-	li.onclick = function(){
+	li.onclick = function() {
+		var mas = JSON.parse(localStorage.getItem('currentList'));
 		for (var i = 0; i < mas.length; i++) {
-			if (mas[i].text == value){
+			if (mas[i].text == value) {
 				if (mas[i].checked == 'true')
 					mas[i].checked = 'false';
 				else
@@ -297,13 +286,11 @@ function newElement(value,state){
 	li.appendChild(node);
 
 	// Check it's valid state
-	if (value == '')
-	{
+	if (value == '') {
 		alert("You must write something!");
 		return;
 	}
-	else
-	{
+	else {
 	    document.getElementById("myUL").appendChild(li);
 	}
 	
@@ -318,21 +305,23 @@ function newElement(value,state){
 	li.appendChild(button_close);
 
 	// Checking for clicked state
-	if (state == 'true'){
+	if (state == 'true') {
 		li.classList.add('checked');
 	}
 
 	// Make 'onclick' action to new button
 	var buttons_close = document.getElementsByClassName("close");
 
-	buttons_close[buttons_close.length-1].onclick = function(){
+	buttons_close[buttons_close.length-1].onclick = function() {
 		var tmp = [];
+		var mas = JSON.parse(localStorage.getItem('currentList'));
 		for (var i = 0; i < mas.length; i++) {
 			if (mas[i].text == value)
 				continue;
 			tmp.push(mas[i]);
 		}
 		mas = tmp;
+		localStorage.setItem(JSON.stringify(tmp));
 
 		var parent = this.parentElement;
 		parent.style.display = 'none';
@@ -343,7 +332,12 @@ function newElement(value,state){
 		checked: state
 	}
 
-	mas.push(obj);
-
+	var mas = JSON.parse(localStorage.getItem('currentList'));
+	if (mas != null)
+		mas.push(obj);
+	else {
+		mas = [];
+		mas.push(obj);
+	}
 	localStorage.setItem('currentList',JSON.stringify(mas));
 }
