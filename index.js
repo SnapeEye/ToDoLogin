@@ -7,11 +7,6 @@ document.getElementById('registration').style.display = 'none';
 document.getElementById('signIn').style.display = 'none';
 document.getElementById('toDo').style.display = 'none';
 
-// Create connection object to MySQL
-var http = createConnectionObject();
-if (http == null)
-	alert('Error while creatin connectionObject.')
-
 // Get the mode that must be displayed right now
 var mode = localStorage.getItem('mode');
 
@@ -21,6 +16,11 @@ var current_user = getLoggedUser();
 // If a user is already logged in
 if (current_user != null)
 	mode = 'toDo';
+
+// Create connection object to MySQL
+var http = createConnectionObject();
+if (http == null)
+	alert('Error while creatin connectionObject.')
 
 // If no block detected or it's our first run
 if (mode === null) {
