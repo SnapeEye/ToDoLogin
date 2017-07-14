@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>SomeTitle</title>
+		<style type="text/css">
+			.posCenter{
+				text-align: center;
+			}
+
+			.posRight{
+				text-align: right;
+			}
+
+			.posCenter p{
+				margin-bottom: 0px;
+			}
+
+			.margin_top_20{
+				margin-top: 20px;
+			}
+
+			.text-red{
+				color: #FF0000;
+			}
+
+			/* Style the list items */
+			ul li
+			{
+			    cursor: pointer;
+			    position: relative;
+			}
+
+			/* Darker background-color on hover */
+			ul li:hover
+			{
+			    background: #ddd;
+			}
+
+			/* When clicked on, add a background color and strike out text */
+			ul li.checked
+			{
+			    background: #888;
+			    color: #fff;
+			    text-decoration: line-through;
+			}
+
+			/* Style the close button */
+			.close
+			{
+			    position: absolute;
+			    right: 0;
+			    top: 0;
+			}
+
+			.close:hover
+			{
+			    background-color: #f44336;
+			    color: white;
+			}
+		</style>
+	</head>
+
+	<body>
+		<main>
+			<!Block "registration">
+			<div id="registration" class="posCenter">
+				<h1>Registration</h1>
+
+				<p>First Name:</p>
+				<input id="textFName" type="text" placeholder="Type your name here.">
+				
+				<p>Last Name:</p>
+				<input id="textLName" type="text" placeholder="Type your surname here.">
+				
+				<p>E-mail:</p>
+				<input id="textEmail" type="text" placeholder="Type your e-mail here.">
+				
+				<p>Password:</p>
+				<input id="textPassword" type="text" placeholder="Type your password here.">
+
+				<br>
+				<input class="margin_top_20" type="button" value="Register" onclick="signUp(encodeURI(textEmail.value), encodeURI(textPassword.value), encodeURI(textFName.value), encodeURI(textLName.value))">
+				<br>
+				<a href="" onclick="rebuild('signIn')">If you are already registered - Sign In</a>
+				<p id="regStatus" class="text-red"></p>
+			</div>
+
+			<!Block "login">
+			<div id="signIn" class="posCenter">
+				<h1>Sign In</h1>
+
+				<p>E-mail:</p>
+				<input id="singInEmail" type="text" placeholder="Type your e-mail here.">
+				
+				<p>Password:</p>
+				<input id="signInPassword" type="text" placeholder="Type your password here.">
+
+				<br>
+				<input class="margin_top_20" type="button" value="Sign In" onclick="signIn(encodeURI(singInEmail.value), encodeURI(signInPassword.value))">
+				<br>
+				<a href="" onclick="rebuild('registration')">If you don't have account yet - Register</a>
+			</div>
+
+			<!Block "list">
+			<div id="toDo" class="posCenter">
+				<div class="posRight">
+					<p id="loggedUserName">data</p>
+					<input id="button-sign-out" class="margin_top_20" type="button" value="Sign Out" onclick="signOut()">
+				</div>
+
+				<h1>My ToDo List</h1>
+
+				<div>
+					<input type="text" id="myInput" placeholder="Type your task here...">
+		  			<input type="button" onclick="newElement(myInput.value,'false')" value="Add">
+				</div>
+
+				<div>
+					<ul id="myUL">
+						
+					</ul>
+				</div>
+			</div>
+		</main>
+
+		<script src="actions.js" language="javascript"></script>
+	</body>
+</html>
