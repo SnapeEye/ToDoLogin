@@ -229,6 +229,7 @@ function initList(user) {
 	}, false);
 
 	var mas = JSON.parse(localStorage.getItem('currentList'));
+	localStorage.removeItem('currentList');
 	if (mas != null) {
 		for (var i = 0; i < mas.length; i++) {
 			newElement(mas[i].text,mas[i].checked)
@@ -315,7 +316,7 @@ function newElement(value,state) {
 			tmp.push(mas[i]);
 		}
 		mas = tmp;
-		localStorage.setItem(JSON.stringify(tmp));
+		localStorage.setItem('currentList',JSON.stringify(tmp));
 
 		var parent = this.parentElement;
 		parent.style.display = 'none';
